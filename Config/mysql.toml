@@ -1,0 +1,2 @@
+Source = "hotData2:hotData2@tcp(localhost:3306)/hotData2?charset=utf8mb4"
+Driver = "mysql"
