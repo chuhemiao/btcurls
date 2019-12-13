@@ -1,13 +1,51 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+	"log"
+	"net/http"
+	"qihuodata/Common"
+	"qihuodata/Config"
+	"regexp"
+)
+
+func GetTypeInfo(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Fatal("系统错误" + err.Error())
+	}
+	id := r.Form.Get("id")
+	re := regexp.MustCompile("[0-9]+")
+	id = re.FindString(id)
+	sql := "select str from hotData2 where id=" + id
+	data := Common.MySql{}.GetConn().ExecSql(sql)
+	if len(data) == 0 {
+		fmt.Fprintf(w, "%s", `{"Code":1,"Message":"id错误，无该分类数据","Data":[]}`)
+		return
+	}
+	fmt.Fprintf(w, "%s", data[0]["str"])
+}
+
+func GetType(w http.ResponseWriter, r *http.Request) {
+	res := Common.MySql{}.GetConn().Select("hotData2", []string{"name", "id"}).QueryAll()
+	Common.Message{}.Success("获取数据成功", res, w)
+}
+
+func GetConfig(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "%s", Config.MySql().Source)
+}
+
+/**
+kill -SIGUSR1 PID 可平滑重新读取mysql配置
+*/
 
 func main() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run() // listen and serve on 0.0.0.0:8080
+	//SyncMysqlCfg()
+	http.HandleFunc("/GetTypeInfo", GetTypeInfo) // 设置访问的路由
+	http.HandleFunc("/GetType", GetType)         // 设置访问的路由
+	http.HandleFunc("/GetConfig", GetConfig)     // 设置访问的路由
+	err := http.ListenAndServe(":9090", nil)     // 设置监听的端口
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
 }

@@ -4,8 +4,8 @@ go 1.12
 
 require (
 	github.com/BurntSushi/toml v0.3.1
-	github.com/PuerkitoBio/goquery v1.5.0 // indirect
-	github.com/bitly/go-simplejson v0.5.0 // indirect
+	github.com/PuerkitoBio/goquery v1.5.0
+	github.com/bitly/go-simplejson v0.5.0
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.4.0
 	github.com/go-sql-driver/mysql v1.4.1
@@ -19,7 +19,7 @@ require (
 	golang.org/x/net v0.0.0-20190912160710-24e19bdeb0f2 // indirect
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
 	golang.org/x/sys v0.0.0-20190913121621-c3b328c6e5a7 // indirect
-	golang.org/x/text v0.3.2 // indirect
+	golang.org/x/text v0.3.2
 	golang.org/x/tools v0.0.0-20190916020655-1ccc110ba9df // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 )
